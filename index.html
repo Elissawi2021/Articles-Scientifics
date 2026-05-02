@@ -1,1 +1,88 @@
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة المقالات العلمية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 font-sans">
+
+    <nav class="bg-blue-800 text-white shadow-md p-4 sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">مختبر الأبحاث العلمية</h1>
+            <button onclick="document.getElementById('addPostForm').scrollIntoView()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm transition">إضافة مقال جديد +</button>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4 md:p-8">
+        
+        <div id="articlesList" class="grid gap-6 md:grid-cols-2 lg:grid-cols-1 mb-12">
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
+                <p class="text-gray-500 italic">لا توجد مقالات منشورة حالياً.. ابدأ بإضافة أول مقال بالأسفل.</p>
+            </div>
+        </div>
+
+        <div id="addPostForm" class="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-lg border border-blue-100">
+            <h2 class="text-2xl font-bold mb-6 text-blue-800 border-b pb-2">لوحة إضافة مقال جديد</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">عنوان المقال العلمي</label>
+                    <input type="text" id="title" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="مثال: تحليل البيانات الحيوية...">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">محتوى المقال</label>
+                    <textarea id="content" rows="6" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="اكتب تفاصيل البحث هنا..."></textarea>
+                </div>
+                <button onclick="addArticle()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-md transition transform active:scale-95">نشر المقال الآن 🚀</button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t p-8 text-center text-gray-500 mt-20">
+        منصة علمية مطورة بواسطة Elissawi &copy; 2026
+    </footer>
+
+    <script>
+        // وظيفة لإضافة مقال وعرضه فوراً
+        function addArticle() {
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+
+            if(!title || !content) {
+                alert("يرجى ملء العنوان والمحتوى أولاً!");
+                return;
+            }
+
+            const list = document.getElementById('articlesList');
+            
+            // إزالة رسالة "لا توجد مقالات" في أول مرة
+            if(list.innerHTML.includes("لا توجد مقالات")) list.innerHTML = "";
+
+            const articleHTML = `
+                <article class="bg-white p-6 rounded-2xl shadow-md border-r-8 border-blue-600 animate-fade-in">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">${title}</h3>
+                    <p class="text-gray-600 leading-relaxed whitespace-pre-wrap">${content}</p>
+                    <div class="mt-4 flex items-center text-sm text-blue-500 font-medium">
+                        <span>تم النشر بتاريخ: ${new Date().toLocaleDateString('ar-EG')}</span>
+                    </div>
+                </article>
+            `;
+
+            list.innerHTML = articleHTML + list.innerHTML;
+            
+            // مسح الحقول بعد النشر
+            document.getElementById('title').value = "";
+            document.getElementById('content').value = "";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+    <style>
+        @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fade-in 0.5s ease-out; }
+    </style>
+</body>
+</html>
